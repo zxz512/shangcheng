@@ -1,7 +1,7 @@
 <template>
-	<view class="container">
+	<view class="container" :style="{height:pageHeight,overflow:'hidden'}">
 		<!-- 搜索栏 -->
-		<search/>
+		<search @window-height='handleWindowHeight'/>
 		<!-- 轮播图 -->
     <swiper indicator-dots autoplay>
     <swiper-item>
@@ -57,6 +57,54 @@
       </navigator>
 		   </view>
 	   </view>
+      <view class="floor">
+		   <!-- 标题 -->
+		   <view class="title">
+			   <image src='/static/uploads/pic_floor01_title.png'/>
+		   </view>
+		   <!-- 商品详情 -->
+		   <view class="items">
+            <navigator url=''>
+        <image src="/static/uploads/pic_floor01_1@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_2@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_3@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_4@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_5@2x.png"></image>
+      </navigator>
+		   </view>
+	   </view>
+      <view class="floor">
+		   <!-- 标题 -->
+		   <view class="title">
+			   <image src='/static/uploads/pic_floor01_title.png'/>
+		   </view>
+		   <!-- 商品详情 -->
+		   <view class="items">
+            <navigator url=''>
+        <image src="/static/uploads/pic_floor01_1@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_2@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_3@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_4@2x.png"></image>
+      </navigator>
+      <navigator url=''>
+        <image src="/static/uploads/pic_floor01_5@2x.png"></image>
+      </navigator>
+		   </view>
+	   </view>
    </view>
 
 	</view>
@@ -68,7 +116,8 @@ import search from '@/components/search.vue'
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+        title: 'Hello',
+        pageHeight:'auto'
 			}
 		},
 		components: {
@@ -78,7 +127,12 @@ import search from '@/components/search.vue'
 
 		},
 		methods: {
-
+    handleWindowHeight(data){
+      //  console.log(data);
+      // 因为取到的需要有单位才能固定，所以要加上单位
+      this.pageHeight=data.height+'px'
+       
+    }
 		}
 	}
 </script>
