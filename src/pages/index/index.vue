@@ -4,109 +4,34 @@
 		<search @window-height='handleWindowHeight'/>
 		<!-- 轮播图 -->
     <swiper indicator-dots autoplay>
-    <swiper-item>
-    <image src='/static/uploads/banner1.png'/>
+    <swiper-item :key="item.goods_id" v-for="item in swiperData">
+    <image :src='item.image_src'/>
     </swiper-item>
-    <swiper-item>
-    <image src='/static/uploads/banner2.png'/>
-  </swiper-item>
-  <swiper-item>
-    <image src='/static/uploads/banner3.png'/>
-  </swiper-item>
-
 </swiper>
 
    <!-- 导航菜单部分 -->
 <view class="navs">
-	<navigator url=''>
-    <image src='/static/uploads/icon_index_nav_1@2x.png'/>
-  </navigator>
-  <navigator url=''>
-    <image src='/static/uploads/icon_index_nav_2@2x.png'/>
-  </navigator>
-  <navigator url=''>
-    <image src='/static/uploads/icon_index_nav_3@2x.png'/>
-  </navigator>
-  <navigator url=''>
-    <image src='/static/uploads/icon_index_nav_4@2x.png'/>
+	<navigator url='' :key="k" v-for="(item,k) in navData">
+    <image :src='item.image_src'/>
   </navigator>
 </view>
    <!-- 楼层部分 -->
    <view class="floors">
-	   <view class="floor">
+	   <view class="floor" v-for="item in floorData">
 		   <!-- 标题 -->
-		   <view class="title">
-			   <image src='/static/uploads/pic_floor01_title.png'/>
+		   <view class="title" >
+			   <image :src='item.floor_title.image_src'/>
 		   </view>
 		   <!-- 商品详情 -->
 		   <view class="items">
-            <navigator url=''>
-        <image src="/static/uploads/pic_floor01_1@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_2@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_3@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_4@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_5@2x.png"></image>
-      </navigator>
-		   </view>
-	   </view>
-      <view class="floor">
-		   <!-- 标题 -->
-		   <view class="title">
-			   <image src='/static/uploads/pic_floor01_title.png'/>
-		   </view>
-		   <!-- 商品详情 -->
-		   <view class="items">
-            <navigator url=''>
-        <image src="/static/uploads/pic_floor01_1@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_2@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_3@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_4@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_5@2x.png"></image>
-      </navigator>
-		   </view>
-	   </view>
-      <view class="floor">
-		   <!-- 标题 -->
-		   <view class="title">
-			   <image src='/static/uploads/pic_floor01_title.png'/>
-		   </view>
-		   <!-- 商品详情 -->
-		   <view class="items">
-            <navigator url=''>
-        <image src="/static/uploads/pic_floor01_1@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_2@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_3@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_4@2x.png"></image>
-      </navigator>
-      <navigator url=''>
-        <image src="/static/uploads/pic_floor01_5@2x.png"></image>
+            <navigator url='' :key="i" v-for="(ima,i) in item.product_list">
+        <image :src="ima.image_src"></image>
       </navigator>
 		   </view>
 	   </view>
    </view>
-
+  <!-- 回到顶部按钮 -->
+  <view class="goTop icon-top" v-if="juli>200" @click="goTop"></view>
 	</view>
 </template>
 
@@ -117,14 +42,24 @@ import search from '@/components/search.vue'
 		data() {
 			return {
         title: 'Hello',
-        pageHeight:'auto'
+        pageHeight:'auto',
+        swiperData:[],
+        navData:[],
+        floorData:[],
+        // 滚动距离
+        juli:0
 			}
 		},
 		components: {
           search
     },
+    onPageScroll(e){
+    this.juli=e.scrollTop;
+    },
 		onLoad() {
-
+    this.getSwiperData()
+    this.getNavsData()
+    this.getFloorData()
 		},
 		methods: {
     handleWindowHeight(data){
@@ -132,7 +67,36 @@ import search from '@/components/search.vue'
       // 因为取到的需要有单位才能固定，所以要加上单位
       this.pageHeight=data.height+'px'
        
+    },
+    // 获取轮播图真实数据
+   async getSwiperData(){
+     const {message}=await this.$request({
+       path:'home/swiperdata'
+     })
+      
+      this.swiperData=message
+          // console.log(swiperData);
+   },
+
+    // 获取导航真实数据
+    async getNavsData(){
+      const {message}=await this.$request({
+       path:'home/catitems'
+     })
+    this.navData=message
+        },
+    // 楼层真实数据
+    async  getFloorData(){
+     const {message}=await this.$request({
+       path:'home/floordata'
+     }) 
+     this.floorData=message
+     },
+    //  点击回到顶部
+    goTop(){
+     uni.pageScrollTo({scrollTop: 0});
     }
+
 		}
 	}
 </script>
@@ -207,5 +171,18 @@ swiper {
     }
   }
 }
-
+.goTop {
+    position: fixed;
+    bottom: 30rpx;
+    right: 30rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100rpx;
+    height: 100rpx;
+    font-size: 48rpx;
+    color: #666;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.8);
+}
 </style>
