@@ -5,7 +5,9 @@
 		<!-- 轮播图 -->
     <swiper indicator-dots autoplay>
     <swiper-item :key="item.goods_id" v-for="item in swiperData">
-    <image :src='item.image_src'/>
+    <navigator :url="item.navigator_url">
+      <image :src='item.image_src'/>
+    </navigator>
     </swiper-item>
 </swiper>
 
@@ -70,24 +72,33 @@ import search from '@/components/search.vue'
     },
     // 获取轮播图真实数据
    async getSwiperData(){
-     const {message}=await this.$request({
+     let {message}=await this.$request({
        path:'home/swiperdata'
      })
-      
+    //  处理路径
+    message = message.map(item => {
+					item.navigator_url = item.navigator_url.replace('goods_detail/main?goods_id', 'goods/index?id')
+					return item
+        })
+
+      // message = message.map(item=>{
+      //   item.navigator_url=item.navigator_url.replace('goods_detail/main?goods_id','goods/index?id')
+      //   return item
+      // })
       this.swiperData=message
           // console.log(swiperData);
    },
 
     // 获取导航真实数据
     async getNavsData(){
-      const {message}=await this.$request({
+      let {message}=await this.$request({
        path:'home/catitems'
      })
     this.navData=message
         },
     // 楼层真实数据
     async  getFloorData(){
-     const {message}=await this.$request({
+     let {message}=await this.$request({
        path:'home/floordata'
      }) 
      this.floorData=message

@@ -15,12 +15,21 @@
 			  },
 			  {
 				"path": "pages/center/index"
+			  },
+			  {
+				"path": "pages/list/index"
+			  },
+			  {
+				"path": "pages/goods/index"
+			  },
+			  {
+				"path": "pages/auth/index"
 			  }
 	
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "uni-app",
+		"navigationBarTitleText": "孙小鑫的小商店",
 		"navigationBarBackgroundColor": "#EB4450",
 		"backgroundColor": "#F8F8F8"
 	},
