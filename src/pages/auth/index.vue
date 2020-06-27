@@ -12,7 +12,7 @@
           }
       },
       methods:{
-    getInfo(e){
+    async getInfo(e){
         //   console.log(e);
     const{
         encryptedData,
@@ -21,11 +21,33 @@
        signature
     }=e.detail
     // 获取code
-      uni.login({
-          success:(res)=>{
-              const{code}=res
-          }
-      })    
+    //   uni.login({
+    //       success:(res)=>{
+    //           const{code}=res
+    //       }
+    //   })    
+    const [error,res]=await uni.login()
+    // console.log(res);
+    const {message}=await this.$request({
+        method:'POST',
+        path:'users/wxlogin',
+        param:{
+            encryptedData,
+             iv,
+           rawData,
+          signature,
+          code:res.code
+        }
+   
+    })
+    // 获取token，进行缓存
+    uni.setStorageSync('mytoken',message.token)
+    // 跳回到上一个页面
+    uni.navigateBack({
+        delta:1
+    })
+    
+    
           }
       }
 }

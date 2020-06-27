@@ -75,9 +75,9 @@
         // 单价 * 数量 并 进行累加
         let total = 0
         this.checkedProducts.forEach(item => {
-          if (item.goods_check) {
+          
             total += item.goods_price * item.goods_num
-          }
+          
         })
         return total
       },
@@ -91,7 +91,7 @@
       }
     },
     methods: {
-      createOrder () {
+     async createOrder () {
         // 创建订单
         // 1、判断是否选中了商品
         if (this.checkedProducts.length === 0) {
@@ -118,7 +118,31 @@
           })
         }
         // 4、创建订单
-
+        let list=this.checkedProducts.map(item=>{
+          return {
+    goods_id: item.goods_id, 
+    goods_number: item.goods_num, 
+    goods_price: item.goods_price
+  }
+        })
+        const orderParam = {
+  order_price: this.countTotal,
+  consignee_addr: this.addressDetail,
+  goods: list
+}
+const {message}=await this.$request({
+  method: 'post',
+  path: 'my/orders/create',
+  param: orderParam,
+  header: {
+    Authorization: token
+  }
+})
+// 获取订单号，跳转到订单页
+const {order_number}=message
+uni.navigateTo({
+  url: '/pages/order/index?order_number=' + order_number
+})
       },
       getAddress () {
         // 获取收货地址
