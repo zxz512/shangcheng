@@ -27,6 +27,18 @@
 			  },
 			  {
 				"path": "pages/order/index"
+			  },
+			  {
+				"path": "pages/map/index",
+				"style": {
+					"navigationBarTitleText": "我的地图"
+				},
+				"permission": {
+					"scope.userLocation": {
+					  "desc": "你的位置信息将用于小程序位置接口的效果展示"
+					}
+				  }
+
 			  }
 	
 	],
@@ -64,6 +76,12 @@
 			"pagePath": "pages/center/index",
 			"iconPath": "static/tabs/icon_user@3x.png",
 			"selectedIconPath": "static/tabs/icon_user_active@3x.png"
+		  },
+		  {
+			"text": "地图",
+			"pagePath": "pages/map/index",
+			"iconPath": "static/tabs/2.png",
+			"selectedIconPath": "static/tabs/1.png"
 		  }
 		]
 	  }
